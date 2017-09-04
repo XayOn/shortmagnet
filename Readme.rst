@@ -17,9 +17,9 @@ Usage
 -----
 
 ::
-    """shortmagnet.
+
+    Shortmag.net
 
     Magnet-oriented URL Shortener.
 
     Usage: shortmagnet [options]
-    """
