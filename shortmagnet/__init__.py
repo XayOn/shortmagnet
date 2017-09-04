@@ -5,6 +5,7 @@ Magnet-oriented URL Shortener.
 
 import uuid
 import configparser
+from functools import partial
 from docopt import docopt
 from flask import Flask, request, redirect
 from flask_redis import FlaskRedis
@@ -18,6 +19,16 @@ def create_app():
     return app, redis_store
 
 
+def index(param, redis_store):
+    """Handle main route."""
+    if request.method == "GET":
+        return redirect(redis_store.get(param))
+    assert param.startswith('magnet:')
+    name = str(uuid.uuid4())[:5]
+    redis_store.set(name, param)
+    return name
+
+
 def main():
     """shortmagnet.
 
@@ -26,9 +37,9 @@ def main():
     Usage: shortmagnet [options]
 
     Options:
-        --config=<config>  Config file
-        --host=<host>      Host to listen on [default:0.0.0.0]
-        --port=<port>      Port to listen on [default:8080]
+        --config=CONFIG  Config file
+        --host=HOST      Host to listen on [default: 0.0.0.0]
+        --port=PORT      Port to listen on [default: 8080]
     """
     options = docopt(main.__doc__)
 
@@ -44,16 +55,9 @@ def main():
     app.config['REDIS_URL'] = config['main']['redis']
 
     # Set up views
-    def index(param):
-        """Handle main route."""
-        if request.method == "GET":
-            return redirect(redis_store.get(param))
-        elif request.method == "POST":
-            name = str(uuid.uuid4())[:5]
-            redis_store.set(name, param)
-            return name
-
-    app.add_url_rule('/<param>', 'index', index, methods=["GET", "POST"])
+    app.add_url_rule(
+        '/<param>', 'index', partial(index, redis_store=redis_store),
+        methods=["GET", "POST"])
 
     # Run
     app.run(host=options['--host'], port=int(options['--port']))
