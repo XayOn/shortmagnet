@@ -59,7 +59,7 @@ def main():
         methods=["GET", "POST"])
 
     app.add_url_rule(
-        '/<param>', 'index', partial(index, redis_store=redis_store),
+        '/', 'index_b', partial(index, redis_store=redis_store),
         methods=["GET", "POST"])
 
     # Run
