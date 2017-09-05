@@ -5,4 +5,4 @@ pylint==1.7.2
 flake8==3.4.1
 flake8_docstrings==1.1.0
 behave==1.2.5
-mockredispy
+mockredispy==2.9.3
