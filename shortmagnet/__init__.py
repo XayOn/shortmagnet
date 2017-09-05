@@ -27,8 +27,8 @@ def main():
 
     Options:
         --config=<config>  Config file
-        --host=<host>      Host to listen on [default:0.0.0.0]
-        --port=<port>      Port to listen on [default:8080]
+        --host=<host>      Host to listen on [default: 0.0.0.0]
+        --port=<port>      Port to listen on [default: 8080]
     """
     options = docopt(main.__doc__)
 
@@ -44,16 +44,17 @@ def main():
     app.config['REDIS_URL'] = config['main']['redis']
 
     # Set up views
-    def index(param):
+    def index(param=None):
         """Handle main route."""
         if request.method == "GET":
             return redirect(redis_store.get(param))
         elif request.method == "POST":
             name = str(uuid.uuid4())[:5]
-            redis_store.set(name, param)
+            redis_store.set(name, request.form['magnet'])
             return name
 
     app.add_url_rule('/<param>', 'index', index, methods=["GET", "POST"])
+    app.add_url_rule('/', 'index', index, methods=["GET", "POST"])
 
     # Run
     app.run(host=options['--host'], port=int(options['--port']))
