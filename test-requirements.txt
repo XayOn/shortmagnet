@@ -5,3 +5,4 @@ pylint
 flake8
 flake8_docstrings
 behave
+mockredispy

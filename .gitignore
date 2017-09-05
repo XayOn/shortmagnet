@@ -1,4 +1,6 @@
 .*.sw?
+*.pyc
+__pycache__
 .tox
 *.egg-info
 htmlcov
@@ -7,3 +9,4 @@ dist
 .eggs
 .coverage
 __pycache__
+docs/build
