@@ -9,7 +9,6 @@ import requests
 def setup_server(context):
     """Start server up."""
     from contextlib import closing
-    from functools import partial
     from shortmagnet import main
     import socket
 
@@ -49,7 +48,7 @@ def make_request(context, request, url):
 @then(u'I receive a body with a string')
 def string_in_body(context):
     """Check body."""
-    assert len(context.result.text) < 7
+    assert len(context.result.text) < 7, context.result.text
 
 
 @then(u'I get a redirect to {place}')
