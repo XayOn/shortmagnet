@@ -58,7 +58,6 @@ def test_main_view():
         assert result
         request.method = "GET"
         response = shortmagnet.index(result, redis)
-        print(dir(response))
         assert response.status_code == 302
         assert response.location == "magnet:foobar"
 

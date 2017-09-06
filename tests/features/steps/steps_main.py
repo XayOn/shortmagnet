@@ -32,17 +32,20 @@ def setup_server(context):
 
 
 @when(u'I make a {request} request to {url}')
-def make_request(context, request, url):
+@when(u'I make a {request} request to {url} with {data}')
+def make_request(context, request, url, data=None):
     """Make a request of type request to given url."""
-    base_url = context.base_url
-    if url == "that string":
-        url = base_url + context.result.text
+    import json
+
+    if not data:
+        try:
+            context.result = getattr(requests, request.lower())(
+                context.base_url + context.result.text)
+        except requests.exceptions.InvalidSchema as msg:
+            context.exception = str(msg)
     else:
-        url = url.replace('{base_url}', base_url)
-    try:
-        context.result = getattr(requests, request.lower())(url)
-    except requests.exceptions.InvalidSchema as msg:
-        context.exception = str(msg)
+        context.result = getattr(requests, request.lower())(
+            context.base_url, data=json.loads(data))
 
 
 @then(u'I receive a body with a string')
