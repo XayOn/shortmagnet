@@ -1,6 +1,7 @@
 CHANGES
 =======
 
+* Cleanup
 * Added interpreters
 * Probably travis working now
 * Trying to figure out why it fails on travis
