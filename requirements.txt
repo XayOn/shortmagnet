@@ -1,3 +1,3 @@
-docopt
-requests
-flask-redis
+docopt==0.6.2
+requests==2.18.4
+flask-redis==0.3.0
